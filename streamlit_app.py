@@ -45,7 +45,7 @@ st.data_editor(df) # the same as st.dataframe but allows to enter your values in
 
 df2 = pd.DataFrame(np.random.randn(50,4), columns=['rand_1', 'rand_2', 'rand_3', 'rand_4'])
 
-alt_viz = alt.Chart(df2).mark_square().encode(x='col_2', y='col_2', size='rand_3', color='rand_3',
+alt_viz = alt.Chart(df2).mark_arc().encode(x='rand_1', y='rand_2', size='rand_3', color='rand_3',
                                          tooltip=['rand_1', 'rand_2', 'rand_3'])
 
 st.write(alt_viz)
