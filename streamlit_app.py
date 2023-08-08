@@ -71,3 +71,15 @@ st.write('Busy hours: ', busy_hrs)
 sleep_hrs = st.slider('How many hours a day do you sleep?',
                       min_value=0, max_value=24, value=(4, 8))
 st.write('Hours slept each day: ', sleep_hrs)
+
+x_vals = np.linspace(-4, 4, 20)
+df_plot = pd.DataFrame({'x': x_vals, 'y': np.sin(x_vals)})
+
+st.subheader('Playing around with st.line_chart()')
+
+st.line_chart(df_plot.set_index('x'))
+
+
+chart_data = pd.DataFrame(np.random.randn(50, 4), columns=['a', 'b', 'c', 'd'])
+
+st.line_chart(chart_data)
