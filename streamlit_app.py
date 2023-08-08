@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
+from datetime import datetime, time
 
 st.header('Enter a number below and click the button. Can you guess what\'s the math\
           behind it?')
@@ -21,31 +22,52 @@ if st.button('Compute'):
 # else:
 #     st.write('Hello')
 
+ans_1 = 'Summing up all the integers from 0 up to and inluding n'
+ans_2 = 'Multiplying all the integers from 1 up to and including n'
+ans_3 = 'This is a Fibonacci Series'
+
+
 side_bar = st.sidebar.selectbox('What do you think the math behind is?',
            ('<select>',
-            'Summing up all the integers from 0 up to and inluding n',
-            'Multiplying all the integers from 1 up to and including n',
-            'This is a Fibonacci Series.'))
+            ans_1,
+            ans_2,
+            ans_3))
 
-if side_bar == 'Summing up all the integers from 0 up to and inluding n':
+if side_bar == ans_1:
     st.write('That is correct. You, my friend, are a genius.')
-elif side_bar == 'Multiplying all the integers from 1 up to and including n':
+elif side_bar == ans_2:
     st.write('Well, not quite! Would you like another guess?')
-elif side_bar == 'This is a Fibonacci Series.':
+elif side_bar == ans_3:
     st.write('Good try but that is incorrect!')
 else:
     st.write('')
 
-df = pd.DataFrame({'name': ['John', 'Mary', 'Jane'],
-                   'age': [9, 23, 56], 
-                   'occupation': ['student', 'engineer', 'lawyer']})
+@st.cache_data
+def df_and_viz(user_num):
+    # Creating a dataframe based off of a user input number
+    df = pd.DataFrame(np.random.randn(user_num, 2), columns=['rand_1', 'rand_2'])
 
-# st.dataframe(df) # the same as st.write(df)
-st.data_editor(df) # the same as st.dataframe but allows to enter your values into the table
+    # st.dataframe(df) # the same as st.write(df)
+    st.data_editor(df) # the same as st.dataframe but allows to enter your values into the table
 
-df2 = pd.DataFrame(np.random.randn(50,4), columns=['rand_1', 'rand_2', 'rand_3', 'rand_4'])
+    alt_viz = alt.Chart(df).mark_circle().encode(x='rand_1', y='rand_2', size='rand_1', color='rand_2',
+                                            tooltip=['rand_1', 'rand_2'])
 
-alt_viz = alt.Chart(df2).mark_arc().encode(x='rand_1', y='rand_2', size='rand_3', color='rand_3',
-                                         tooltip=['rand_1', 'rand_2', 'rand_3'])
+    st.write(alt_viz)
 
-st.write(alt_viz)
+## Just deployed this to 30daysoflearning.streamlit.app
+df_and_viz(user_num)
+
+
+#Trying out st.slider
+
+age = st.slider('Tell us your age', 1, 100, 26)
+st.write('I\'m ', age, ' years old.')
+
+busy_hrs = st.slider('During what hours of the day are you the busiest? Select a range', 
+                     value=(time(9,30), time(18,30)))
+st.write('Busy hours: ', busy_hrs)
+
+sleep_hrs = st.slider('How many hours a day do you sleep?',
+                      min_value=0, max_value=24, value=(4, 8))
+st.write('Hours slept each day: ', sleep_hrs)
